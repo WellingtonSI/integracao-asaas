@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('cartao_credito', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo_cobranca_asaas');
+            $table->double('value');
+            $table->date('dateCreated');
+            $table->date('dueDate');
             $table->string('customer');
-            $table->string('name');
-            $table->string('cpf');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            //$table->string('password');
-            $table->rememberToken();
+            $table->string('transactionReceiptUrl');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('cartao_credito');
     }
 };
