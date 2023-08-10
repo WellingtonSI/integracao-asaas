@@ -5,18 +5,20 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BoletoResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
         return [
-            'bankSlipUrl' => $this->bankSlipUrl,
-            'value' => $this->value
+            'id' => $this->id,
+            'name' => $this->name,
+            'customer' => $this->customer,
+            'cpfCnpj' => $this->cpf_cnpj
         ];
     }
 }
