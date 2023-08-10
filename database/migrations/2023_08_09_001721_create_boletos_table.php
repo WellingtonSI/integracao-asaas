@@ -17,7 +17,7 @@ return new class extends Migration
             $table->double('value');
             $table->date('dateCreated');
             $table->date('dueDate');
-            $table->string('customer');
+            $table->foreign('customer')->references('customer')->on('users');
             $table->string('bankSlipUrl');
             $table->timestamps();
         });
