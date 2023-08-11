@@ -17,8 +17,10 @@ return new class extends Migration
             $table->double('value');
             $table->date('dateCreated');
             $table->date('dueDate');
-            $table->string('customer');
+            $table->string('customer_code');
             $table->string('transactionReceiptUrl');
+            $table->string('creditCardToken');
+            $table->foreign('customer_code')->references('customer')->on('users');
             $table->timestamps();
         });
     }

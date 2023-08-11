@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PagamentoBoletoController;
+use App\Http\Controllers\PagamentoCartãoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/boleto', [PagamentoBoletoController::class, 'criarCobrancaBoleto']);
+
+Route::post('/cartao',[PagamentoCartaoController::class, ]);  
+
+Route::group(['prefix' => 'pix'], function($router) {
+    
+});  
 
 Route::group(['prefix' => 'user'], function($router) {
     Route::get('/find', [UserController::class, 'find']);
