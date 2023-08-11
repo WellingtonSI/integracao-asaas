@@ -13,7 +13,7 @@ class Boleto extends Model
         'value',
         'dateCreated',
         'dueDate',
-        'customer',
+        'customer_code',
         'bankSlipUrl'
     ];
 }
