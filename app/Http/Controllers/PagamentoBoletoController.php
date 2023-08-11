@@ -35,7 +35,7 @@ class PagamentoBoletoController extends Controller
         'value' =>  $response->value,
         'dateCreated' => $response->dateCreated,
         'dueDate' =>  $response->dueDate,
-        'customer' => $request->customer,
+        'customer_code' => $request->customer,
         'bankSlipUrl' => $response->bankSlipUrl
        ]);
 
