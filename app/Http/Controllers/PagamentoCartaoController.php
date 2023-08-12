@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CartaoResource;
 use App\Models\Cartao;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -54,9 +55,7 @@ class PagamentoCartãoController extends Controller
                 'phone' => $request->phone
             ],
             'remoteIp' => $request->remoteIp
-       ]);
-
-       $response = json_decode($response);
+       ])->json();
 
        $cartao = Cartao::create([
         'codigo_cobranca_asaas' =>  $response->id,
@@ -121,24 +120,27 @@ class PagamentoCartãoController extends Controller
                 'phone' => $request->phone
             ],
             'remoteIp' => $request->remoteIp
-       ]);
-
-       $response = json_decode($response);
+       ])->json();
 
        if($response->errors){
             return response()->json($response->errors,400);
        }
 
-       $cartao = Cartao::create([
-        'codigo_cobranca_asaas' =>  $response->id,
-        'value' => $response->value,
-        'dateCreated' => $response->dateCreated,
-        'dueDate' => $response->dueDate,
-        'customer_code' => $response->customer,
-        'transactionReceiptUrl' => $response->transactionReceiptUrl,
-        'creditCardToken' => $response->creditCard->creditCardToken
-       ]);
+       try{
+            Cartao::create([
+                'codigo_cobranca_asaas' =>  $response->id,
+                'value' => $response->value,
+                'dateCreated' => $response->dateCreated,
+                'dueDate' => $response->dueDate,
+                'customer_code' => $response->customer,
+                'transactionReceiptUrl' => $response->transactionReceiptUrl,
+                'creditCardToken' => $response->creditCard->creditCardToken
+           ]);
+       }catch(Exception $e){
+            return response()->json('Erro! tente novamente mais tarde',500);
+       }
+        
 
-       return new CartaoResource($cartao);
+       return response()->json('Sucesso',200);
     }
 }
