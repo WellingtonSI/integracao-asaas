@@ -1,10 +1,11 @@
 $( document ).ready(function() {
+
     $('input:radio[name="metodoPagamento"]').change(function() {
-        if ($(this).val() === 'credito') {
-            $('.dadosCartao').show();
-        }else{
-            $('.dadosCartao').hide();
-        }
+      if ($(this).val() === 'cartao') {
+          $('.dadosCartao').show();
+      }else{
+          $('.dadosCartao').hide();
+      }
     });
 
     $( "#confirmar" ).on( "click", function() {
@@ -26,8 +27,7 @@ $( document ).ready(function() {
               pegarIp()
               .then(resposta => {
                   remoteIp = resposta
-
-                  console.log(remoteIp);
+                  
                   var datas =  {
                     'customer': response.data.customer,
                     'cpfCnpj': response.data.cpfCnpj,
@@ -51,10 +51,8 @@ $( document ).ready(function() {
 
               })
               .catch(erro => {
-                  
+                  erro();
               });
-
-              
 
             }else if(metodo == 'pix'){
               var datas =  {
@@ -90,37 +88,39 @@ $( document ).ready(function() {
                       
                     }
                   }).done(function(response) {
-                   
-
+                
                     if(metodo == 'cartao'){
                       var remoteIp;
-                      $(function() {
-                        $.getJSON("https://api.ipify.org?format=jsonp&callback=?",
-                        function(json) {
-                          remoteIp = json.ip
-                        }
-                        );
-                      });
-                      var datas =  {
-                        'customer': response.data.customer,
-                        'cpfCnpj': response.data.cpfCnpj,
-                        'value': $('#value').val(),
-                        'dueDate': dueDate,
-                        'holderName': $('#holderName').val(),
-                        'number' : $('#number').val(),
-                        'expiryMonth' : $('#expiryMonth').val(),
-                        'expiryYear': $('#expiryYear').val(),
-                        'ccv': $('#ccv').val(),
-                        'name': $('#firstName').val() +' '+$('#lastName').val(),
-                        'email' : $('#email').val(),
-                        'cpfCnpj' : $('#cpfCnpj').val(),
-                        'phone' : $('#phone').val(),
-                        'postalCode' : $('#postalCode').val(),
-                        'addressNumber': $('#addressNumber').val(),
-                        'remoteIp' : remoteIp,
-                      } 
+                      pegarIp()
+                      .then(resposta => {
+                          remoteIp = resposta
 
-                      criarCobranca(datas,metodo);
+                          console.log(remoteIp);
+                          var datas =  {
+                            'customer': response.data.customer,
+                            'cpfCnpj': response.data.cpfCnpj,
+                            'value': $('#value').val(),
+                            'dueDate': dueDate,
+                            'holderName': $('#holderName').val(),
+                            'number' : $('#number').val(),
+                            'expiryMonth' : $('#expiryMonth').val(),
+                            'expiryYear': $('#expiryYear').val(),
+                            'ccv': $('#ccv').val(),
+                            'name': $('#firstName').val() +' '+$('#lastName').val(),
+                            'email' : $('#email').val(),
+                            'cpfCnpj' : $('#cpfCnpj').val(),
+                            'phone' : $('#phone').val(),
+                            'postalCode' : $('#postalCode').val(),
+                            'addressNumber': $('#addressNumber').val(),
+                            'remoteIp' : remoteIp,
+                          }
+
+                          criarCobranca(datas,metodo);
+
+                      })
+                      .catch(erro => {
+                          
+                      });
 
                     }else if(metodo == 'pix'){
                       var datas =  {
@@ -147,17 +147,11 @@ $( document ).ready(function() {
                     
                 
                   }).fail(function(data) {
-                    if(data.status =='404'){
-                        
-                        
-                    }else{
-        
-                    }
-                    
+                    erro();
                 }); 
 
             }else{
-
+              erro();
             }
             
         });   
@@ -183,7 +177,7 @@ $( document ).ready(function() {
             window.location.assign(window.location.href+'finalizacao');
 
           }).fail(function(data) {
-            
+            erro();
         }); 
     }
 });
@@ -200,4 +194,12 @@ function pegarIp(resolver = true) {
               );
             });
   });
+}
+function erro(){
+  Swal.fire({
+    title: 'Não foi possível realizar o pagamento!',
+    text: 'Se o problema persistir, contate o suporte',
+    icon: 'error',
+    confirmButtonText: 'OK'
+  })
 }

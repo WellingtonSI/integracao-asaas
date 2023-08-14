@@ -1,10 +1,6 @@
 $( document ).ready(function() {
     var metodo = sessionStorage.getItem("metodo");
 
-
-   
-    
-
     if(metodo == 'pix'){
 
         const imgElement = $('<img>').attr('id', 'imgElem');
