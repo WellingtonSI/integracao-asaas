@@ -15,9 +15,9 @@ class PixResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
-            'QRcode' => $request->encodedImage,
-            'copiaCola' => $request->payload,
-            'expiraEm' => $request->expirationDate
+            'QRcode' => $this->encodedImage,
+            'copiaCola' => $this->payload,
+            'expiraEm' => $this->expirationDate
         ];
     }
 }
