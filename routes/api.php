@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/boleto', [PagamentoBoletoController::class, 'criarCobrancaBoleto']);
 
 Route::group(['prefix' => 'cartao'], function($router) {
-    Route::post('/avista',[PagamentoCartaoController::class, 'criarCobrancaAVista']);
-    Route::post('/parcelado',[PagamentoCartaoController::class, 'criarCobrancaParcelado']);
+    Route::post('/',[PagamentoCartaoController::class, 'criarCobrancaAVista']);
+    //Route::post('/parcelado',[PagamentoCartaoController::class, 'criarCobrancaParcelado']);
 }); 
 
 Route::post('/pix',[PagamentoPixController::class, 'criarCobrancaPix']);  
