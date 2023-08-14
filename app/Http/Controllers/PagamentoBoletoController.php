@@ -13,7 +13,8 @@ class PagamentoBoletoController extends Controller
     public function criarCobrancaBoleto(Request $request){
         $request->validate([
             'customer' => ['required','string'],
-            'value' => ['required','float'],
+            'cpfCnpj' => ['required', 'string'],
+            'value' => ['required','numeric'],
             'dueDate' => ['required','date']
         ]);
         
@@ -26,7 +27,9 @@ class PagamentoBoletoController extends Controller
             'billingType' => "BOLETO",
             'value' => $request->value,
             'dueDate' => $request->dueDate
-       ])->json();
+       ]);
+       
+       $response = json_decode($response);
 
        try{
             $boleto = Boleto::create([
@@ -34,7 +37,7 @@ class PagamentoBoletoController extends Controller
                 'value' =>  $response->value,
                 'dateCreated' => $response->dateCreated,
                 'dueDate' =>  $response->dueDate,
-                'customer_code' => $request->customer,
+                'cpf_cnpj' => $request->cpfCnpj,
                 'bankSlipUrl' => $response->bankSlipUrl
             ]);
         }

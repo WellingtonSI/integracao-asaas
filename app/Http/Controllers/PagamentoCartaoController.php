@@ -8,12 +8,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class PagamentoCartãoController extends Controller
+class PagamentoCartaoController extends Controller
 {
     public function criarCobrancaAVista(Request $request){
         $request->validate([
             'customer' => ['required','string'],
-            'value' => ['required','float'],
+            'value' => ['required','numeric'],
             'dueDate' => ['required','date'],
             'holderName'=> ['required','string'],
             'number' =>  ['required','string'],
@@ -44,7 +44,7 @@ class PagamentoCartãoController extends Controller
                 'number' => $request->number,
                 'expiryMonth' => $request->expiryMonth,
                 'expiryYear' => $request->expiryYear,
-                'cvv' => $request->css,
+                'ccv' => $request->ccv,
             ],
             'creditCardHolderInfo' => [
                 'name' => $request->name,
@@ -55,14 +55,16 @@ class PagamentoCartãoController extends Controller
                 'phone' => $request->phone
             ],
             'remoteIp' => $request->remoteIp
-       ])->json();
+       ]);
 
+       $response = json_decode($response);
+    dd($response);
        $cartao = Cartao::create([
         'codigo_cobranca_asaas' =>  $response->id,
         'value' => $response->value,
         'dateCreated' => $response->dateCreated,
         'dueDate' => $response->dueDate,
-        'customer_code' => $response->customer,
+        'cpf_cnpj' => preg_replace('/[^0-9\s]/', '', $request->cpfCnpj),
         'transactionReceiptUrl' => $response->transactionReceiptUrl,
         'creditCardToken' => $response->creditCard->creditCardToken
        ]);
@@ -74,9 +76,9 @@ class PagamentoCartãoController extends Controller
     public function criarCobrancaParcelado(Request $request){
         $request->validate([
             'customer' => ['required','string'],
-            'value' => ['required','float'],
-            'installmentCount' => ['required','integer'],
-            'installmentValue' => ['required','float'],
+            'value' => ['required','numeric'],
+            'installmentCount' => ['required','numeric'],
+            'installmentValue' => ['required','numeric'],
             'dueDate' => ['required','date'],
             'holderName'=> ['required','string'],
             'number' =>  ['required','string'],
@@ -97,7 +99,7 @@ class PagamentoCartãoController extends Controller
             'accept' => 'application/json',
             'content-type' => 'application/json',
             'access_token' => env('API_KEY')
-       ])->post('https://sandbox.asaas.com/api/v3/payments/', [
+        ])->post('https://sandbox.asaas.com/api/v3/payments/', [
             'customer' => $request->customer,
             'billingType' => "CREDIT_CARD",
             'value' => $request->value,
@@ -120,7 +122,7 @@ class PagamentoCartãoController extends Controller
                 'phone' => $request->phone
             ],
             'remoteIp' => $request->remoteIp
-       ])->json();
+        ])->json();
 
        if($response->errors){
             return response()->json($response->errors,400);

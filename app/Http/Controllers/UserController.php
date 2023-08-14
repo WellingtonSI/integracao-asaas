@@ -15,7 +15,7 @@ class UserController extends Controller
             'cpfCnpj' => ['required','string']
         ]);
 
-        $user = User::find(preg_replace('/[^0-9\s]/', '', $request->cpfCnpj));
+        $user = User::findOrFail(preg_replace('/[^0-9\s]/', '', $request->cpfCnpj));
 
         return new UserResource($user);
     }
