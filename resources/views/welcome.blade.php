@@ -152,7 +152,7 @@
 
               <div class="col-md-3">
                 <label for="postalCode" class="form-label">CEP</label>
-                <input type="text" class="form-control" id="postalCode" value="45000-000" placeholder="" required="">
+                <input type="text" class="form-control" id="postalCode" value="01153-000" placeholder="" required="">
                 <div class="invalid-feedback">
                   CEP é obrigatório.
                 </div>

@@ -58,7 +58,7 @@ class PagamentoCartaoController extends Controller
        ]);
 
        $response = json_decode($response);
-    dd($response);
+       
        $cartao = Cartao::create([
         'codigo_cobranca_asaas' =>  $response->id,
         'value' => $response->value,
