@@ -2,6 +2,9 @@
 
 ### Desafio de integração com a Asaas.
 
+Sistema de processamento de pagamentos integrado ao ambiente de homologação do Asaas.
+
+
 1. Para o primeiro passo, crie o arquivo .env e coloque sua chave de conexão com api na variavel ***API_KEY=***
 
 2. Logo após instale as depedências do projeto com ***composer install***
